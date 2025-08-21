@@ -1,6 +1,21 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faBookOpen,
+  faCircleHalfStroke,
+  faHouse,
+  faLayerGroup,
+  faMagnifyingGlass,
+  faTags,
+} from '@fortawesome/free-solid-svg-icons';
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { githubLink } from '@/staticParam';
+config.autoAddCss = false;
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,6 +45,50 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <header className="flex h-12 items-center justify-between bg-gray-100 px-10 transition-shadow duration-300 hover:shadow-lg">
+          <div className="text-border text-2xl font-bold text-black hover:text-cyan-600">
+            <Link href={'/'}>TyrangYang_blog</Link>
+          </div>
+          <ul className="flex">
+            <div className="flex">
+              <li className="header-nav flex">
+                <Link href={'/categories'}>
+                  <FontAwesomeIcon className="mr-1" icon={faLayerGroup} />
+                  <span>Categories</span>
+                </Link>
+              </li>
+              <li className="header-nav">
+                <Link href={'/posts'}>
+                  <FontAwesomeIcon className="mr-1" icon={faBookOpen} />
+                  <span>Posts</span>
+                </Link>
+              </li>
+              <li className="header-nav">
+                <Link href={'/tags'}>
+                  <FontAwesomeIcon className="mr-1" icon={faTags} />
+                  <span>Tags</span>
+                </Link>
+              </li>
+              <li className="header-nav">
+                <Link href={githubLink} target="_blank">
+                  <FontAwesomeIcon className="mr-1" icon={faGithub} />
+                </Link>
+              </li>
+              <li className="header-nav">
+                <FontAwesomeIcon className="mr-1" icon={faHouse} />
+              </li>
+            </div>
+            <span>|</span>
+            <div className="mx-2 flex items-center justify-center">
+              <li className="header-nav">
+                <FontAwesomeIcon className="mr-1" icon={faMagnifyingGlass} />
+              </li>
+              <li className="header-nav">
+                <FontAwesomeIcon className="mr-1" icon={faCircleHalfStroke} />
+              </li>
+            </div>
+          </ul>
+        </header>
         {children}
       </body>
     </html>

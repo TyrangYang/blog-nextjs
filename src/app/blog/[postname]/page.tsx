@@ -4,6 +4,7 @@ import matter from 'gray-matter';
 import Link from 'next/link';
 import Head from 'next/head';
 import { marked } from 'marked';
+import type { Metadata } from 'next';
 
 interface PageProps {
   params: Promise<{
@@ -11,10 +12,20 @@ interface PageProps {
   }>;
 }
 
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { postname } = await params;
+  return {
+    title: postname,
+    // description: post.body.slice(0, 100),
+  };
+}
+
+const postsDirectory = path.join(process.cwd(), 'posts');
+
 export default async function PostPage({ params }: PageProps) {
   const { postname } = await params;
-
-  const postsDirectory = path.join(process.cwd(), 'posts');
 
   const postString = fs
     .readFileSync(path.join(postsDirectory, postname + '.md'))
@@ -30,9 +41,12 @@ export default async function PostPage({ params }: PageProps) {
       <Head>
         <title>{postname}</title>
       </Head>
-      <main>
+      <main className="mx-40 flex flex-col rounded-lg">
         <h1>{meta.title}</h1>
-        <div dangerouslySetInnerHTML={{ __html: htmlString }}></div>
+        <article
+          className="past-article"
+          dangerouslySetInnerHTML={{ __html: htmlString }}
+        ></article>
         <Link href={'/'}>back</Link>
       </main>
     </>
@@ -40,7 +54,6 @@ export default async function PostPage({ params }: PageProps) {
 }
 
 export async function generateStaticParams() {
-  const postsDirectory = path.join(process.cwd(), 'posts');
   const filenames = fs.readdirSync(postsDirectory);
 
   const res = filenames.map((filename) => {

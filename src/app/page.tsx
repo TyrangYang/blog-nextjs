@@ -33,9 +33,6 @@ export default async function Home() {
           ))}
         </ul>
       </main>
-      <footer className="row-start-3 flex flex-wrap items-center justify-center gap-[24px]">
-        Haolin Yang
-      </footer>
     </div>
   );
 }

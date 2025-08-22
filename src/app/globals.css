@@ -37,6 +37,10 @@
   @apply border-l-[1.5px] border-black my-0.5;
 }
 
+@utility mask {
+  @apply fixed top-0 left-0 mt-14 w-full h-lvh opacity-25 bg-black blur-sm;
+}
+
 @utility in-progress {
   @apply relative before:content-['in_progress'] before:absolute before:opacity-0 
   hover:before:content-['in_progress'] hover:before:absolute 

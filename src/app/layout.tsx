@@ -7,6 +7,7 @@ import { authorName, githubLink } from '@/staticParam';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faBars,
   faBookOpen,
   faCircleHalfStroke,
   faHouse,
@@ -17,7 +18,7 @@ import {
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import FooterCCLink from '@/components/footerCCLink';
+import FooterCCLink from '@/components/FooterCCLink';
 config.autoAddCss = false;
 
 // const geistSans = Geist({
@@ -49,54 +50,70 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       > */}
       <body>
-        <header className="flex h-14 items-center justify-between bg-gray-100 px-10 transition-shadow duration-300 hover:shadow-lg">
+        <header
+          className={`flex items-center justify-between
+                      h-14 bg-gray-100 px-10 
+                      hover:shadow-lg transition-shadow duration-300 
+                      sm:fixed sm:w-full`}
+        >
           <div className="text-border text-2xl font-bold text-black hover:text-cyan-600">
             <Link href={'/'}>TyrangYang_Blog</Link>
           </div>
-          <ul className="flex">
-            <div className="flex">
-              <li className="header-nav flex">
-                <Link href={'/categories'}>
-                  <FontAwesomeIcon className="mr-1" icon={faLayerGroup} />
-                  <span>Categories</span>
-                </Link>
-              </li>
-              <li className="header-nav">
-                <Link href={'/posts'}>
-                  <FontAwesomeIcon className="mr-1" icon={faBookOpen} />
-                  <span>Posts</span>
-                </Link>
-              </li>
-              <li className="header-nav">
-                <Link href={'/tags'}>
-                  <FontAwesomeIcon className="mr-1" icon={faTags} />
-                  <span>Tags</span>
-                </Link>
-              </li>
-              <li className="header-nav">
-                <Link href={githubLink} target="_blank" rel="external noopener">
-                  <FontAwesomeIcon className="mr-1" icon={faGithub} />
-                </Link>
-              </li>
-              <li className="header-nav">
-                <FontAwesomeIcon className="mr-1" icon={faHouse} />
-              </li>
-            </div>
-            <span>|</span>
-            <div className="mx-2 flex items-center justify-center">
-              <li className="header-nav">
-                <FontAwesomeIcon className="mr-1" icon={faMagnifyingGlass} />
-              </li>
-              <li className="header-nav rotate-225">
-                <FontAwesomeIcon className="mr-1" icon={faCircleHalfStroke} />
-              </li>
-            </div>
-          </ul>
+          {/* small screen */}
+          <nav className="sm:hidden">
+            <FontAwesomeIcon icon={faBars} />
+          </nav>
+          {/* desktop screen */}
+          <nav className="hidden sm:flex">
+            <ul className="flex">
+              <div className="flex space-x-4">
+                <li className="clickable-hover flex">
+                  <Link href={'/categories'}>
+                    <FontAwesomeIcon className="mr-1" icon={faLayerGroup} />
+                    <span>Categories</span>
+                  </Link>
+                </li>
+                <li className="clickable-hover">
+                  <Link href={'/posts'}>
+                    <FontAwesomeIcon className="mr-1" icon={faBookOpen} />
+                    <span>Posts</span>
+                  </Link>
+                </li>
+                <li className="clickable-hover">
+                  <Link href={'/tags'}>
+                    <FontAwesomeIcon className="mr-1" icon={faTags} />
+                    <span>Tags</span>
+                  </Link>
+                </li>
+                <li className="clickable-hover">
+                  <Link
+                    href={githubLink}
+                    target="_blank"
+                    rel="external noopener"
+                  >
+                    <FontAwesomeIcon className="mr-1" icon={faGithub} />
+                  </Link>
+                </li>
+                <li className="clickable-hover">
+                  <FontAwesomeIcon className="mr-1" icon={faHouse} />
+                </li>
+              </div>
+              <span className="mx-4 delimiter" />
+              <div className="flex items-center justify-center space-x-4">
+                <li className="clickable-hover in-progress">
+                  <FontAwesomeIcon className="mr-1" icon={faMagnifyingGlass} />
+                </li>
+                <li className="clickable-hover rotate-225">
+                  <FontAwesomeIcon icon={faCircleHalfStroke} />
+                </li>
+              </div>
+            </ul>
+          </nav>
         </header>
         {children}
-        <footer className="text-sm">
-          <p className="flex justify-center whitespace-pre">
-            © 2025
+        <footer className="text-sm py-1">
+          <div className="flex justify-center items-center whitespace-pre">
+            <p>© 2025</p>
             <span> | </span>
             <Link
               href={'/'}
@@ -114,8 +131,8 @@ export default function RootLayout({
                 height={25}
               />
             </FooterCCLink>
-          </p>
-          <p className="text-center whitespace-pre-wrap">
+          </div>
+          <p className="text-center">
             This content is licensed under a{' '}
             <FooterCCLink>
               Creative Commons Attribution-NonCommercial-NoDerivatives 4.0

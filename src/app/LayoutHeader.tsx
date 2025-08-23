@@ -10,7 +10,7 @@ import {
   faMagnifyingGlass,
   faTags,
 } from '@fortawesome/free-solid-svg-icons';
-import { githubLink } from '@/staticParam';
+import { githubLink } from '@/variable/staticParam';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 const LayoutHeader: FC = () => {

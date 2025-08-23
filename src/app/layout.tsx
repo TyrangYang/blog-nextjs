@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 // import { Geist, Geist_Mono } from 'next/font/google';
-import LayoutHeader from '@/components/LayoutHeader';
-import LayoutFooter from '@/components/LayoutFooter';
+import LayoutHeader from '@/app/LayoutHeader';
+import LayoutFooter from '@/app/LayoutFooter';
 import './globals.css';
 
 import { config } from '@fortawesome/fontawesome-svg-core';

@@ -1,7 +1,7 @@
 'use client';
 import React, { FC, useState, PropsWithChildren, useEffect } from 'react';
 import clsx from 'clsx';
-import HamburgerBtn from './HamburgerBtn';
+import HamburgerBtn from '../components/HamburgerBtn';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 interface Props extends PropsWithChildren {

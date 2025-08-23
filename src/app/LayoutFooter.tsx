@@ -1,8 +1,8 @@
-import { authorName } from '@/staticParam';
+import { authorName } from '@/variable/staticParam';
 import Link from 'next/link';
 import Image from 'next/image';
 import React, { FC } from 'react';
-import FooterCCLink from './FooterCCLink';
+import FooterCCLink from '../components/FooterCCLink';
 
 const LayoutFooter: FC = () => {
   return (

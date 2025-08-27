@@ -2,7 +2,7 @@
 import React, { FC, useState, PropsWithChildren, useEffect } from 'react';
 import clsx from 'clsx';
 import HamburgerBtn from '../components/HamburgerBtn';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 interface Props extends PropsWithChildren {
   className?: string;
@@ -11,14 +11,14 @@ const MenuButton: FC<Props> = ({ className, children }) => {
   const [openMenu, setOpenMenu] = useState(false);
 
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
 
   useEffect(() => {
     const closeMenu = () => {
       setOpenMenu(false);
     };
     closeMenu();
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   const toggleMenu = () => {
     setOpenMenu((bool) => !bool);
@@ -28,12 +28,18 @@ const MenuButton: FC<Props> = ({ className, children }) => {
       <HamburgerBtn isClose={openMenu} toggleBtn={toggleMenu} />
       <div
         className={clsx(
-          'panel opacity-0 transition-all duration-100',
+          'panel opacity-0 transition-all duration-200',
           openMenu && 'opacity-100',
         )}
       >
-        <div className="mask"></div>
-        <div>{children}</div>
+        {openMenu && (
+          <>
+            <div className="mask"></div>
+            <div className="absolute top-0 left-0 w-full mt-14 bg-white">
+              {children}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

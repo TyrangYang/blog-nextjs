@@ -19,14 +19,14 @@ const LayoutHeader: FC = () => {
       className={`flex items-center justify-between
                       h-14 bg-gray-100 px-10 
                       hover:shadow-lg transition-shadow duration-300 
-                      sm:fixed sm:w-full`}
+                      sm:sticky top-0 sm:w-full`}
     >
       <div className="text-border text-2xl font-bold text-black hover:text-cyan-600">
         <Link href={'/'}>TyrangYang_Blog</Link>
       </div>
       {/* small screen */}
       <MenuButton className="sm:hidden">
-        <nav className="absolute top-0 left-0 w-full mt-14 bg-white">
+        <nav>
           <ul className="flex flex-col space-y-4 items-center">
             <li className="clickable-hover in-progress">
               <FontAwesomeIcon className="mr-1" icon={faMagnifyingGlass} />

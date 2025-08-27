@@ -238,7 +238,7 @@ let promise3 = new Promise((resolve, reject) => {
 Promise.all([promise1, promise2, promise3]).then((val) => console.log(val)); // go to next only all fulfilled
 // [ 'First', 'Second', 'Goodbye' ] (after one second)
 Promise.allSettled([promise1, promise2, promise3]).then((val) =>
-  console.log(val)
+  console.log(val),
 ); // get all status
 // [
 //   { status: 'fulfilled', value: 'First' },

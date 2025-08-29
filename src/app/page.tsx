@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default async function Home() {
   const postsDirectory = path.join(process.cwd(), 'posts');

@@ -1,7 +1,15 @@
 @import 'tailwindcss';
 
 .post-article {
-  /* @apply test-border flex flex-col; */
+  @apply test-border flex flex-col gap-1.5;
+}
+
+.post-article > h2 {
+  @apply test-border text-2xl font-bold;
+}
+
+.post-article > h2:before {
+  content: '# ';
 }
 /* :root {
   --background: #ffffff;

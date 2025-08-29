@@ -1,9 +1,17 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype';
+import rehypeHighlight from 'rehype-highlight';
+import remarkToc from 'remark-toc';
+import rehypeStringify from 'rehype-stringify';
+import slug from 'rehype-slug';
+
 import Link from 'next/link';
 import Head from 'next/head';
-import { marked, Tokens } from 'marked';
 import type { Metadata } from 'next';
 import { MetaDataType } from '@/type';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +19,6 @@ import {
   faCalendarDays,
   faCircleUser,
 } from '@fortawesome/free-solid-svg-icons';
-import hljs from 'highlight.js';
 import 'highlight.js/styles/vs2015.css';
 
 interface PageProps {
@@ -43,21 +50,25 @@ export default async function PostPage({ params }: PageProps) {
   const meta = contentWithMetaData.data as MetaDataType;
   const markdown = contentWithMetaData.content;
 
-  const codeRenderer = {
-    code({ text }: Tokens.Code) {
-      const hl = hljs.highlightAuto(text);
+  // processing markdown
+  const process = await unified()
+    .use(remarkParse) // md -> MDAST
+    .use(remarkGfm) // support GFM
+    .use(remarkRehype) //  MDAST → HAST
+    .use(remarkToc, { minDepth: 2 })
+    .use(rehypeHighlight) // highlight code
+    .use(slug) //add header id
+    .use(rehypeStringify) // html
+    .process(markdown);
 
-      return `<pre><code class="hljs">${hl.value}</code></pre>`;
-    },
-  };
-  marked.use({ renderer: codeRenderer });
-  const htmlString = marked(markdown);
+  const htmlString = process.toString();
 
   const dateString = meta.date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: '2-digit',
   });
+
   return (
     <>
       <Head>

@@ -11,7 +11,6 @@ import rehypeStringify from 'rehype-stringify';
 import slug from 'rehype-slug';
 
 import Link from 'next/link';
-import Head from 'next/head';
 import type { Metadata } from 'next';
 import { MetaDataType } from '@/type';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,7 +18,10 @@ import {
   faCalendarDays,
   faCircleUser,
 } from '@fortawesome/free-solid-svg-icons';
-import 'highlight.js/styles/vs2015.css';
+import 'highlight.js/styles/atom-one-light.min.css';
+
+import BackBtn from './BackBtn';
+import { authorName } from '@/variable/staticParam';
 
 interface PageProps {
   params: Promise<{
@@ -27,28 +29,33 @@ interface PageProps {
   }>;
 }
 
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
-  const { postname } = await params;
-  return {
-    title: postname,
-    // description: post.body.slice(0, 100),
-  };
-}
-
 const postsDirectory = path.join(process.cwd(), 'posts');
 
-export default async function PostPage({ params }: PageProps) {
-  const { postname } = await params;
-
+const readMarkDown = (postname: string) => {
   const postString = fs
     .readFileSync(path.join(postsDirectory, postname + '.md'))
     .toString();
   const contentWithMetaData = matter(postString);
-
   const meta = contentWithMetaData.data as MetaDataType;
   const markdown = contentWithMetaData.content;
+  return { meta, markdown };
+};
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { postname } = await params;
+  const { meta } = readMarkDown(postname);
+  return {
+    title: meta.title,
+    // description: post.body.slice(0, 100),
+  };
+}
+
+export default async function PostPage({ params }: PageProps) {
+  const { postname } = await params;
+
+  const { meta, markdown } = readMarkDown(postname);
 
   const isToc = !!meta.toc?.enable;
 
@@ -73,16 +80,13 @@ export default async function PostPage({ params }: PageProps) {
 
   return (
     <>
-      <Head>
-        <title>{postname}</title>
-      </Head>
-      <main className="sm:mx-40 flex flex-col rounded-lg">
+      <main className="sm:mx-80 flex flex-col rounded-lg">
         <h1 className="text-2xl font-bold mt-10 mb-4"> {meta.title}</h1>
         <div className="flex space-x-4 mb-2">
-          <div className="flex items-center space-x-1 clickable-hover">
+          <div className="flex items-center space-x-1 link-hover">
             <FontAwesomeIcon icon={faCircleUser} />
             <Link href={'/'}>
-              <p>{meta.author}</p>
+              <p>{meta.author ?? authorName}</p>
             </Link>
           </div>
           <div className="flex items-center space-x-1 text-gray-400">
@@ -94,7 +98,9 @@ export default async function PostPage({ params }: PageProps) {
           className="post-article"
           dangerouslySetInnerHTML={{ __html: htmlString }}
         ></article>
-        <Link href={'/'}>back</Link>
+        <div className="flex flex-row-reverse">
+          <BackBtn />
+        </div>
       </main>
     </>
   );

@@ -4,20 +4,12 @@
   @apply flex flex-col gap-2;
 }
 
-.post-article blockquote {
-  @apply bg-sky-100 border-l-10 border-l-sky-300 p-3;
-}
-
-.post-article p code {
-  @apply bg-zinc-200 text-rose-500 px-2 py-0.5;
-}
-
 .post-article > h2 {
   @apply text-2xl font-bold my-2;
 }
 
 .post-article > h3 {
-  @apply text-2xl font-bold my-2;
+  @apply text-xl font-bold my-2;
 }
 
 .post-article > h2:before {
@@ -25,6 +17,39 @@
 }
 .post-article > h3:before {
   content: '## ';
+}
+
+.post-article blockquote {
+  @apply bg-sky-100 border-l-10 border-l-sky-300 p-3;
+}
+
+.post-article p code {
+  @apply bg-zinc-200 text-rose-500 px-2 py-0.5 rounded-sm;
+}
+
+.post-article p a {
+  @apply text-cyan-500 hover:text-rose-400;
+}
+
+.post-article p:has(img) {
+  @apply flex justify-center;
+}
+
+.post-article ul,
+ol {
+  @apply pl-10;
+}
+
+.post-article hr {
+  @apply text-gray-200;
+}
+
+.post-article ul li {
+  @apply list-disc;
+}
+
+.post-article ol li {
+  @apply list-decimal;
 }
 /* :root {
   --background: #ffffff;
@@ -53,6 +78,10 @@
 
 @utility clickable-hover {
   @apply hover:text-blue-300;
+}
+
+@utility link-hover {
+  @apply text-cyan-500 hover:text-rose-300;
 }
 
 @utility test-border {

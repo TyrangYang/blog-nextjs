@@ -8,7 +8,7 @@ export default async function Home() {
 
   const posts = filenames.map((filename) => ({
     name: filename.replace(/\.md$/, ''),
-    url: `/blog/${filename.replace(/\.md$/, '')}`,
+    url: `/posts/${filename.replace(/\.md$/, '')}`,
   }));
 
   // console.log(posts);

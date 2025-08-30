@@ -50,14 +50,16 @@ export default async function PostPage({ params }: PageProps) {
   const meta = contentWithMetaData.data as MetaDataType;
   const markdown = contentWithMetaData.content;
 
+  const isToc = !!meta.toc?.enable;
+
   // processing markdown
   const process = await unified()
     .use(remarkParse) // md -> MDAST
     .use(remarkGfm) // support GFM
+    .use(isToc ? [[remarkToc, { minDepth: 2 }]] : []) // conditionally add remarkToc
     .use(remarkRehype) //  MDAST → HAST
-    .use(remarkToc, { minDepth: 2 })
-    .use(rehypeHighlight) // highlight code
     .use(slug) //add header id
+    .use(rehypeHighlight) // highlight code
     .use(rehypeStringify) // html
     .process(markdown);
 

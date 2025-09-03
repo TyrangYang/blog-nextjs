@@ -2,14 +2,17 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
 import remarkParse from 'remark-parse';
+import remarkDirective from 'remark-directive';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeHighlight from 'rehype-highlight';
 import remarkToc from 'remark-toc';
 import rehypeStringify from 'rehype-stringify';
 import slug from 'rehype-slug';
-
+import type { Root } from 'mdast';
+import { h } from 'hastscript';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { MetaDataType } from '@/type';
@@ -59,9 +62,35 @@ export default async function PostPage({ params }: PageProps) {
 
   const isToc = !!meta.toc?.enable;
 
+  function directivePlugin() {
+    return function (tree: Root) {
+      visit(tree, function (node) {
+        if (node.type === 'image') {
+          console.log(JSON.parse(JSON.stringify(node)));
+        }
+        if (
+          node.type === 'containerDirective' ||
+          node.type === 'leafDirective' ||
+          node.type === 'textDirective'
+        ) {
+          const data = node.data || (node.data = {});
+          const hast = h(node.name, node.attributes || {});
+
+          // console.log(data, hast);
+
+          data.hName = hast.tagName;
+          data.hProperties = hast.properties;
+          // console.log(JSON.parse(JSON.stringify(node)));
+        }
+      });
+    };
+  }
+
   // processing markdown
   const process = await unified()
     .use(remarkParse) // md -> MDAST
+    .use(remarkDirective) // analysis directive
+    .use(directivePlugin) // customize what should be the output
     .use(remarkGfm) // support GFM
     .use(isToc ? [[remarkToc, { minDepth: 2 }]] : []) // conditionally add remarkToc
     .use(remarkRehype) //  MDAST → HAST
@@ -71,6 +100,8 @@ export default async function PostPage({ params }: PageProps) {
     .process(markdown);
 
   const htmlString = process.toString();
+
+  console.log(htmlString);
 
   const dateString = meta.date.toLocaleDateString('en-US', {
     year: 'numeric',

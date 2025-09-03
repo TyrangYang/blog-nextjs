@@ -16,9 +16,28 @@ math:
 
 ## Introduction
 
+:::main{#readme}
+
+Loremipsum.
+
+::hr{.red}
+
+A :i[lovely] language know as :abbr[HTML]{title="HyperText Markup Language"}.
+
+:::
+
+:img[alt]{src="/test.png" width="50%"}
+:cite[smith04]
+::youtube[Video of a cat in a box]{v=01ab2cd3efg}
+
 This is a test blog post written in **Markdown**. It _demonstrates_ `common` features used in blog writing.
 
 > test
+
+## img
+
+![01-container](/flex-grid/01-container.svg 'test'){width="50%"}
+:img[01-container]{src="/flex-grid/01-container.svg" width="50%"}
 
 ## header 2
 

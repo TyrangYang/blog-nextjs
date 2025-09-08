@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 import remarkParse from 'remark-parse';
@@ -15,7 +12,6 @@ import type { Root } from 'mdast';
 import { h } from 'hastscript';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { MetaDataType } from '@/type';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendarDays,
@@ -25,24 +21,13 @@ import 'highlight.js/styles/atom-one-light.min.css';
 
 import BackBtn from './BackBtn';
 import { authorName } from '@/variable/staticParam';
+import { postNames, readMarkDown } from '@/utils/fetchMarkDown';
 
 interface PageProps {
   params: Promise<{
     postname: string;
   }>;
 }
-
-const postsDirectory = path.join(process.cwd(), 'posts');
-
-const readMarkDown = (postname: string) => {
-  const postString = fs
-    .readFileSync(path.join(postsDirectory, postname + '.md'))
-    .toString();
-  const contentWithMetaData = matter(postString);
-  const meta = contentWithMetaData.data as MetaDataType;
-  const markdown = contentWithMetaData.content;
-  return { meta, markdown };
-};
 
 export async function generateMetadata({
   params,
@@ -108,10 +93,9 @@ export default async function PostPage({ params }: PageProps) {
     month: 'long',
     day: '2-digit',
   });
-
   return (
     <>
-      <main className="sm:mx-80 flex flex-col rounded-lg">
+      <main className="sm:mx-80 flex flex-col">
         <h1 className="text-2xl font-bold mt-10 mb-4"> {meta.title}</h1>
         <div className="flex space-x-4 mb-2">
           <div className="flex items-center space-x-1 link-hover">
@@ -137,14 +121,9 @@ export default async function PostPage({ params }: PageProps) {
   );
 }
 
+// next js
 export async function generateStaticParams() {
-  const filenames = fs.readdirSync(postsDirectory);
-
-  const res = filenames.map((filename) => {
-    return {
-      postname: filename.replace('.md', ''),
-    };
+  return postNames.map((postname) => {
+    return { postname };
   });
-
-  return res;
 }

@@ -7,7 +7,7 @@ import React, { FC } from 'react';
 
 interface Props {
   title: string;
-  metaDataList: (MetaDataType & { postFilename: string })[];
+  metaDataList: MetaDataType[];
 }
 const CategoryCard: FC<Props> = ({ title, metaDataList }) => {
   return (

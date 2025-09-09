@@ -1,4 +1,4 @@
-export type MetaDataType = {
+export type RawMetaDataType = {
   title: string;
   date: Date;
   author: string;
@@ -10,4 +10,9 @@ export type MetaDataType = {
   };
   linkToMarkdown?: boolean;
   math?: { enable?: boolean };
+};
+
+export type MetaDataType = RawMetaDataType & {
+  id: string;
+  postFilename: string;
 };

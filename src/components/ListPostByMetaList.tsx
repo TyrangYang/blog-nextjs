@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 
 type Props = {
-  metaDataList: (MetaDataType & { postFilename: string })[];
+  metaDataList: MetaDataType[];
 };
 
 export default function ListPostByMetaList({ metaDataList }: Props) {

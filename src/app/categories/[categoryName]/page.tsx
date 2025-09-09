@@ -1,8 +1,8 @@
+import ListPostByMetaList from '@/components/ListPostByMetaList';
 import { groupMetaByCategory } from '@/utils/fetchMarkDown';
 import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import dayjs from 'dayjs';
-import Link from 'next/link';
 
 interface Props {
   params: Promise<{
@@ -10,46 +10,28 @@ interface Props {
   }>;
 }
 
-async function CategoryPage({ params }: Props) {
+async function OneCategoryPage({ params }: Props) {
   const { categoryName } = await params;
   const metaList = groupMetaByCategory[categoryName.toUpperCase()].toSorted(
     (a, b) => {
-      return dayjs(a.date).valueOf() - dayjs(b.date).valueOf();
+      return dayjs(b.date).valueOf() - dayjs(a.date).valueOf();
     },
   );
 
   return (
     <div className="grow sm:mx-50 mx-2 flex flex-col">
-      <h3 className="self-end text-3xl my-10">
+      <h3 className="self-end text-3xl my-10 font-bold">
         <FontAwesomeIcon icon={faFolderOpen} className="mr-2" />
-        <span>{categoryName}</span>
+        <span>{categoryName.toUpperCase()}</span>
       </h3>
-      <div className="flex flex-col space-y-2">
-        {metaList.map((meta) => {
-          return (
-            <div
-              className="flex justify-between"
-              key={`category-${categoryName}-post-${meta.title}`}
-            >
-              <Link
-                href={`/posts/${meta.postname}`}
-                className="clickable-hover text-xl"
-              >
-                {meta.title}
-              </Link>
-              <div>{dayjs(meta.date).format('YYYY-MM-DD')}</div>
-            </div>
-          );
-        })}
-      </div>
+      <ListPostByMetaList metaDataList={metaList}></ListPostByMetaList>
     </div>
   );
 }
-export default CategoryPage;
+export default OneCategoryPage;
 
 // next js
 export async function generateStaticParams() {
-  console.log(groupMetaByCategory);
   const categories = Object.keys(groupMetaByCategory);
   return categories.map((c) => {
     return { categoryName: c.toLowerCase() };

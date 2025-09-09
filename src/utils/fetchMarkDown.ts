@@ -17,19 +17,19 @@ export const readMarkDown = (postname: string) => {
 };
 
 export const postsDirectory = path.join(process.cwd(), 'posts');
-const filenames = fs.readdirSync(postsDirectory);
+const fileDirnames = fs.readdirSync(postsDirectory);
 
-export const postNames = filenames.map((filename) =>
+export const fileNames = fileDirnames.map((filename) =>
   filename.replace(/\.md$/, ''),
 );
 
-export const allMeta = postNames.map((postName) => {
+export const allMeta = fileNames.map((postName) => {
   const { meta } = readMarkDown(postName);
-  return { ...meta, postname: postName };
+  return { ...meta, postFilename: postName };
 });
 
 export const groupMetaByCategory = allMeta.reduce<{
-  [category: string]: (MetaDataType & { postname: string })[];
+  [category: string]: (MetaDataType & { postFilename: string })[];
 }>((result, metadata) => {
   const { categories } = metadata;
   categories.forEach((category) => {

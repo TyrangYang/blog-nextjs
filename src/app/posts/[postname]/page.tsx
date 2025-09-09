@@ -21,7 +21,7 @@ import 'highlight.js/styles/atom-one-light.min.css';
 
 import BackBtn from './BackBtn';
 import { authorName } from '@/variable/staticParam';
-import { postNames, readMarkDown } from '@/utils/fetchMarkDown';
+import { fileNames, readMarkDown } from '@/utils/fetchMarkDown';
 
 interface PageProps {
   params: Promise<{
@@ -40,7 +40,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function PostPage({ params }: PageProps) {
+export default async function OnePostPage({ params }: PageProps) {
   const { postname } = await params;
 
   const { meta, markdown } = readMarkDown(postname);
@@ -123,7 +123,7 @@ export default async function PostPage({ params }: PageProps) {
 
 // next js
 export async function generateStaticParams() {
-  return postNames.map((postname) => {
+  return fileNames.map((postname) => {
     return { postname };
   });
 }

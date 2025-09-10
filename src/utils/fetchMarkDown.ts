@@ -1,9 +1,9 @@
 import path from 'path';
 import fs from 'fs';
 import matter from 'gray-matter';
-import lunr from 'lunr';
 import { nanoid } from 'nanoid';
 import { MetaDataType, RawMetaDataType } from '@/type';
+import { getGroupMetaByCategory } from './groupMarkDownUtils';
 
 export const readMarkDown = (postname: string) => {
   const postString = fs
@@ -25,31 +25,13 @@ export const fileNames = fileDirnames.map((filename) =>
   filename.replace(/\.md$/, ''),
 );
 
-export const allMeta = fileNames.map((postName) => {
+export const allMetaMap = fileNames.reduce((map, postName) => {
   const { meta } = readMarkDown(postName);
-  return { id: nanoid(8), ...meta, postFilename: postName };
-});
+  const val = { id: nanoid(8), ...meta, postFilename: postName };
+  map.set(val.id, val);
+  return map;
+}, new Map<string, MetaDataType>());
 
-export const groupMetaByCategory = allMeta.reduce<{
-  [category: string]: MetaDataType[];
-}>((result, metadata) => {
-  const { categories } = metadata;
-  categories.forEach((category) => {
-    const c = category.toUpperCase();
-    if (!result[c]) {
-      result[c] = [];
-    }
-    result[c].push(metadata);
-  });
-  return result;
-}, {});
+export const allMetaList = [...allMetaMap.values()];
 
-export const lunrIndex = lunr(function () {
-  this.ref('id');
-  this.field('title');
-  this.field('categories');
-
-  allMeta.forEach((meta) => {
-    this.add(meta);
-  });
-});
+export const groupAllMetaByCategory = getGroupMetaByCategory(allMetaList);

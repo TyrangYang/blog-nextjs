@@ -1,5 +1,5 @@
 import ListPostByMetaList from '@/components/ListPostByMetaList';
-import { groupMetaByCategory } from '@/utils/fetchMarkDown';
+import { groupAllMetaByCategory } from '@/utils/fetchMarkDown';
 import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import dayjs from 'dayjs';
@@ -12,7 +12,7 @@ interface Props {
 
 async function OneCategoryPage({ params }: Props) {
   const { categoryName } = await params;
-  const metaList = groupMetaByCategory[categoryName.toUpperCase()].toSorted(
+  const metaList = groupAllMetaByCategory[categoryName.toUpperCase()].toSorted(
     (a, b) => {
       return dayjs(b.date).valueOf() - dayjs(a.date).valueOf();
     },
@@ -32,7 +32,7 @@ export default OneCategoryPage;
 
 // next js
 export async function generateStaticParams() {
-  const categories = Object.keys(groupMetaByCategory);
+  const categories = Object.keys(groupAllMetaByCategory);
   return categories.map((c) => {
     return { categoryName: c.toLowerCase() };
   });

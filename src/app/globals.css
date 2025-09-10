@@ -11,12 +11,18 @@
 .post-article > h3 {
   @apply text-xl font-bold my-2;
 }
+.post-article > h4 {
+  @apply text-lg font-bold my-2;
+}
 
 .post-article > h2:before {
   content: '# ';
 }
 .post-article > h3:before {
   content: '## ';
+}
+.post-article > h4:before {
+  content: '### ';
 }
 
 .post-article blockquote {

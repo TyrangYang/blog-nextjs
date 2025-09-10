@@ -11,9 +11,9 @@ math:
   enable: false
 ---
 
-![01-container](/flex-grid/01-container.svg)
+![01-container](/flex-grid/01-container.svg){.max-w-sm}
 
-![02-items](/flex-grid/02-items.svg)
+![02-items](/flex-grid/02-items.svg){.max-w-sm}
 
 ## Flex
 
@@ -37,7 +37,7 @@ A [Flexbox code Example](https://codepen.io/TyrangYang/pen/GRZjQgg)
 }
 ```
 
-![flex-direction](/flex-grid/flex-direction.svg)
+![flex-direction](/flex-grid/flex-direction.svg){.max-w-lg}
 
 ### flex-warp
 
@@ -47,7 +47,7 @@ A [Flexbox code Example](https://codepen.io/TyrangYang/pen/GRZjQgg)
 }
 ```
 
-![flex-wrap](/flex-grid/flex-wrap.svg)
+![flex-wrap](/flex-grid/flex-wrap.svg){.max-w-lg}
 
 ### flex-flow
 
@@ -67,7 +67,7 @@ This is a shorthand for the flex-direction and flex-wrap properties.
 }
 ```
 
-![order](/flex-grid/order.svg)
+![order](/flex-grid/order.svg){.max-w-md}
 
 ### flex-grow
 
@@ -101,7 +101,7 @@ In this example, container is `1100px,` item base width is `100px`. The left spa
 
 `800 / 4 = 200` the final with will be `300px (100+200); 500px (100+400); 300px`
 
-![flex-grow](/flex-grid/flex-grow.svg)
+![flex-grow](/flex-grid/flex-grow.svg){.max-w-lg}
 
 ### flex-shrink
 
@@ -207,13 +207,13 @@ This defines the alignment along the main axis.
 }
 ```
 
-![justify-content](/flex-grid/justify-content.svg)
+![justify-content](/flex-grid/justify-content.svg){.max-w-sm}
 
 ### align-content
 
 This aligns a flex container’s lines within when there is extra space in the **cross-axis**, similar to how `justify-content` aligns individual items within the main-axis.
 
-![align-content](/flex-grid/align-content.svg)
+![align-content](/flex-grid/align-content.svg){.max-w-sm}
 
 ### align-items
 
@@ -225,7 +225,7 @@ This aligns a flex container’s lines within when there is extra space in the *
 }
 ```
 
-![align-items](/flex-grid/align-items.svg)
+![align-items](/flex-grid/align-items.svg){.max-w-sm}
 
 ### align-self
 
@@ -237,7 +237,7 @@ This allows the alignment to be overridden for individual flex items.
 }
 ```
 
-![align-self](/flex-grid/align-self.svg)
+![align-self](/flex-grid/align-self.svg){.max-w-md}
 
 ## grid
 
@@ -276,7 +276,7 @@ Example:
 }
 ```
 
-![template-columns-rows-01](/flex-grid/template-columns-rows-01.svg)
+![template-columns-rows-01](/flex-grid/template-columns-rows-01.svg){.max-w-md}
 
 If assign name to each line:
 
@@ -287,7 +287,7 @@ If assign name to each line:
 }
 ```
 
-![template-columns-rows-02](/flex-grid/template-columns-rows-02.svg)
+![template-columns-rows-02](/flex-grid/template-columns-rows-02.svg){.max-w-md}
 
 ### grid-column & grid-row
 
@@ -309,7 +309,7 @@ Example:
 }
 ```
 
-![grid-column-row](/flex-grid/grid-column-row.svg)
+![grid-column-row](/flex-grid/grid-column-row.svg){.max-w-md}
 
 ### grid-template-areas & grid-area
 
@@ -337,7 +337,7 @@ Example:
 }
 ```
 
-![grid-template-areas](/flex-grid/grid-template-areas.svg)
+![grid-template-areas](/flex-grid/grid-template-areas.svg){.max-w-md}
 
 ### grid-template
 
@@ -364,7 +364,7 @@ A shorthand for setting `grid-template-rows`, `grid-template-columns`, and `grid
 }
 ```
 
-![grid-gap](/flex-grid/grid-gap.svg)
+![grid-gap](/flex-grid/grid-gap.svg){.max-w-md}
 
 ### justify-items
 
@@ -480,7 +480,7 @@ Example:
 }
 ```
 
-![grid-auto-columns-rows-01](/flex-grid/grid-auto-columns-rows-01.svg)
+![grid-auto-columns-rows-01](/flex-grid/grid-auto-columns-rows-01.svg){.max-w-md}
 
 If use `grid-auto-columns`:
 
@@ -490,7 +490,7 @@ If use `grid-auto-columns`:
 }
 ```
 
-![grid-auto-columns-rows-02](/flex-grid/grid-auto-columns-rows-02.svg)
+![grid-auto-columns-rows-02](/flex-grid/grid-auto-columns-rows-02.svg){.max-w-md}
 
 ### grid-auto-flow
 
@@ -526,7 +526,7 @@ Example:
 }
 ```
 
-![grid-auto-flow-01](/flex-grid/grid-auto-flow-01.svg)
+![grid-auto-flow-01](/flex-grid/grid-auto-flow-01.svg){.max-w-md}
 
 ```css
 .container {
@@ -534,7 +534,7 @@ Example:
 }
 ```
 
-![grid-auto-flow-02](/flex-grid/grid-auto-flow-02.svg)
+![grid-auto-flow-02](/flex-grid/grid-auto-flow-02.svg){.max-w-md}
 
 ### grid
 

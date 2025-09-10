@@ -11,7 +11,7 @@ const BackBtn: FC = () => {
         router.back();
       }}
     >
-      back
+      {'<< back'}
     </button>
   );
 };

@@ -47,60 +47,55 @@ export default async function OnePostPage({ params }: PageProps) {
 
   const isToc = !!meta.toc?.enable;
 
-  // function directivePlugin() {
-  //   return function (tree: Root) {
-  //     visit(tree, function (node) {
-  //       if (node.type === 'image') {
-  //         console.log(JSON.parse(JSON.stringify(node)));
-  //       }
-  //       if (
-  //         node.type === 'containerDirective' ||
-  //         node.type === 'leafDirective' ||
-  //         node.type === 'textDirective'
-  //       ) {
-  //         const data = node.data || (node.data = {});
-  //         const hast = h(node.name, node.attributes || {});
-
-  //         // console.log(data, hast);
-
-  //         data.hName = hast.tagName;
-  //         data.hProperties = hast.properties;
-  //         console.log(JSON.parse(JSON.stringify(node)));
-  //       }
-  //     });
-  //   };
-  // }
-
+  // support {.<className>}
   function remarkImageAttributes() {
     return (tree: Root) => {
       visit(tree, 'image', (node, index, parent) => {
-        console.log(index);
         if (!parent || index === undefined) return;
-        const next = parent.children[index + 1];
-        console.log(JSON.parse(JSON.stringify(parent)));
+        const nextAttrNode = parent.children[index + 1]; // get adjacent text node: {.<className>}
 
-        // Make {width="50%"} work
-        if (next && next.type === 'text') {
-          const match = next.value.match(/^\{([^}]+)\}/);
-          if (match) {
-            const attrString = match[1];
+        const matchAttrRegExp = new RegExp(/^\{([^}]+)\}/); // {<key>="<val>" .<className>} => '<key>="<val>" .<className>'
 
-            attrString.split(/\s+/).forEach((pair) => {
-              const m = pair.match(/^([a-zA-Z0-9_-]+)=(["']?)(.+?)\2$/);
-              if (m) {
-                const [, key, , value] = m;
+        if (nextAttrNode && nextAttrNode.type === 'text') {
+          const matchAttrString = nextAttrNode.value.match(matchAttrRegExp);
+
+          if (matchAttrString) {
+            const attrString = matchAttrString[1];
+
+            const matchPairRegExp = new RegExp(
+              /^([a-zA-Z0-9_-]+)=["']?(.+?)["']?$/,
+            ); // <key>="<val>" => ['<key>="<val>"', '<key>', '<val>']
+
+            const matchClassNameRegExp = new RegExp(/\.([a-zA-Z_][\w_-]*)/); //.<className> => ['.<className>', '<className>']
+
+            attrString.split(/\s+/).forEach((attr) => {
+              const matchPair = attr.match(matchPairRegExp); // match width="50%"
+              const matchClassName = attr.match(matchClassNameRegExp); // match .<className>
+
+              if (matchPair) {
+                console.log(matchPair);
+                const [, key, value] = matchPair;
                 node.data = node.data || {};
                 node.data.hProperties = node.data.hProperties || {};
                 node.data.hProperties[key] = value;
+                console.log(node.data);
+              } else if (matchClassName) {
+                const [, classname] = matchClassName;
+                node.data = node.data || {};
+                node.data.hProperties = node.data.hProperties || {};
+                if (Array.isArray(node.data.hProperties.className)) {
+                  const classes = new Set(node.data.hProperties.className);
+                  classes.add(classname);
+                  node.data.hProperties.className = Array.from(classes);
+                } else {
+                  node.data.hProperties.className = [classname];
+                }
               }
             });
-
-            // remove { }
-            next.value = next.value.replace(/^\{[^}]+\}/, '');
-            if (next.value.trim() === '') {
-              parent.children.splice(index + 1, 1);
-            }
           }
+
+          // remove nextAttrNode in parent.children
+          parent.children.splice(index + 1, 1);
         }
       });
     };
@@ -109,7 +104,7 @@ export default async function OnePostPage({ params }: PageProps) {
   // processing markdown
   const process = await unified()
     .use(remarkParse) // md -> MDAST
-    .use(remarkImageAttributes)
+    .use(remarkImageAttributes) // add image attribute
     // .use(remarkDirective) // analysis directive
     // .use(directivePlugin) // customize what should be the output
     .use(remarkGfm) // support GFM
@@ -122,7 +117,7 @@ export default async function OnePostPage({ params }: PageProps) {
 
   const htmlString = process.toString();
 
-  console.log(htmlString);
+  // console.log(htmlString);
 
   const dateString = meta.date.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -131,7 +126,7 @@ export default async function OnePostPage({ params }: PageProps) {
   });
   return (
     <>
-      <main className="mx-10 sm:mx-80 flex flex-col">
+      <main className="mx-10 sm:mx-80 flex flex-col grow">
         <h1 className="text-2xl font-bold mt-10 mb-4"> {meta.title}</h1>
         <div className="flex space-x-4 mb-2">
           <div className="flex items-center space-x-1 link-hover">
@@ -149,7 +144,7 @@ export default async function OnePostPage({ params }: PageProps) {
           className="post-article"
           dangerouslySetInnerHTML={{ __html: htmlString }}
         ></article>
-        <div className="flex flex-row-reverse">
+        <div className="flex flex-row-reverse mt-5 border-t-2 border-t-gray-200">
           <BackBtn />
         </div>
       </main>

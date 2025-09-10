@@ -24,7 +24,7 @@
 }
 
 .post-article p code {
-  @apply bg-zinc-200 text-rose-500 px-2 py-0.5 rounded-sm;
+  @apply bg-zinc-100 text-rose-500 px-2 py-0.5 rounded-sm;
 }
 
 .post-article p a {

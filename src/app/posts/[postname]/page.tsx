@@ -47,25 +47,60 @@ export default async function OnePostPage({ params }: PageProps) {
 
   const isToc = !!meta.toc?.enable;
 
-  function directivePlugin() {
-    return function (tree: Root) {
-      visit(tree, function (node) {
-        if (node.type === 'image') {
-          console.log(JSON.parse(JSON.stringify(node)));
-        }
-        if (
-          node.type === 'containerDirective' ||
-          node.type === 'leafDirective' ||
-          node.type === 'textDirective'
-        ) {
-          const data = node.data || (node.data = {});
-          const hast = h(node.name, node.attributes || {});
+  // function directivePlugin() {
+  //   return function (tree: Root) {
+  //     visit(tree, function (node) {
+  //       if (node.type === 'image') {
+  //         console.log(JSON.parse(JSON.stringify(node)));
+  //       }
+  //       if (
+  //         node.type === 'containerDirective' ||
+  //         node.type === 'leafDirective' ||
+  //         node.type === 'textDirective'
+  //       ) {
+  //         const data = node.data || (node.data = {});
+  //         const hast = h(node.name, node.attributes || {});
 
-          // console.log(data, hast);
+  //         // console.log(data, hast);
 
-          data.hName = hast.tagName;
-          data.hProperties = hast.properties;
-          // console.log(JSON.parse(JSON.stringify(node)));
+  //         data.hName = hast.tagName;
+  //         data.hProperties = hast.properties;
+  //         console.log(JSON.parse(JSON.stringify(node)));
+  //       }
+  //     });
+  //   };
+  // }
+
+  function remarkImageAttributes() {
+    return (tree: Root) => {
+      visit(tree, 'image', (node, index, parent) => {
+        console.log(index);
+        if (!parent || index === undefined) return;
+        const next = parent.children[index + 1];
+        console.log(JSON.parse(JSON.stringify(parent)));
+
+        // Make {width="50%"} work
+        if (next && next.type === 'text') {
+          const match = next.value.match(/^\{([^}]+)\}/);
+          if (match) {
+            const attrString = match[1];
+
+            attrString.split(/\s+/).forEach((pair) => {
+              const m = pair.match(/^([a-zA-Z0-9_-]+)=(["']?)(.+?)\2$/);
+              if (m) {
+                const [, key, , value] = m;
+                node.data = node.data || {};
+                node.data.hProperties = node.data.hProperties || {};
+                node.data.hProperties[key] = value;
+              }
+            });
+
+            // remove { }
+            next.value = next.value.replace(/^\{[^}]+\}/, '');
+            if (next.value.trim() === '') {
+              parent.children.splice(index + 1, 1);
+            }
+          }
         }
       });
     };
@@ -74,8 +109,9 @@ export default async function OnePostPage({ params }: PageProps) {
   // processing markdown
   const process = await unified()
     .use(remarkParse) // md -> MDAST
-    .use(remarkDirective) // analysis directive
-    .use(directivePlugin) // customize what should be the output
+    .use(remarkImageAttributes)
+    // .use(remarkDirective) // analysis directive
+    // .use(directivePlugin) // customize what should be the output
     .use(remarkGfm) // support GFM
     .use(isToc ? [[remarkToc, { minDepth: 2 }]] : []) // conditionally add remarkToc
     .use(remarkRehype) //  MDAST → HAST
@@ -95,7 +131,7 @@ export default async function OnePostPage({ params }: PageProps) {
   });
   return (
     <>
-      <main className="sm:mx-80 flex flex-col">
+      <main className="mx-10 sm:mx-80 flex flex-col">
         <h1 className="text-2xl font-bold mt-10 mb-4"> {meta.title}</h1>
         <div className="flex space-x-4 mb-2">
           <div className="flex items-center space-x-1 link-hover">

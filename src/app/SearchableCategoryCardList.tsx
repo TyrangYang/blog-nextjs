@@ -29,6 +29,8 @@ export default function SearchableCategoryCardList({ allMetaList }: Props) {
     <>
       <div className="mt-10">
         <Input
+          id="search-input"
+          name="search"
           value={inputVal}
           placeholder="Search"
           onChange={(e) => {

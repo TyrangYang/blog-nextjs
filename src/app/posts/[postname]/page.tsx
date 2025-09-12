@@ -1,15 +1,10 @@
 import { unified } from 'unified';
-import { visit } from 'unist-util-visit';
 import remarkParse from 'remark-parse';
-import remarkDirective from 'remark-directive';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeHighlight from 'rehype-highlight';
-import remarkToc from 'remark-toc';
 import rehypeStringify from 'rehype-stringify';
 import slug from 'rehype-slug';
-import type { Root } from 'mdast';
-import { h } from 'hastscript';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,6 +17,9 @@ import 'highlight.js/styles/atom-one-light.min.css';
 import BackBtn from './BackBtn';
 import { authorName } from '@/variable/staticParam';
 import { fileNames, readMarkDown } from '@/utils/fetchMarkDown';
+import remarkImageAttributes from './utils/remarkImageAttributes';
+import extractHeading from './utils/extractHeading';
+import TableOfContents from './TableOfContents';
 
 interface PageProps {
   params: Promise<{
@@ -45,79 +43,21 @@ export default async function OnePostPage({ params }: PageProps) {
 
   const { meta, markdown } = readMarkDown(postname);
 
-  const isToc = !!meta.toc?.enable;
-
-  // support {.<className>}
-  function remarkImageAttributes() {
-    return (tree: Root) => {
-      visit(tree, 'image', (node, index, parent) => {
-        if (!parent || index === undefined) return;
-        const nextAttrNode = parent.children[index + 1]; // get adjacent text node: {.<className>}
-
-        const matchAttrRegExp = new RegExp(/^\{([^}]+)\}/); // {<key>="<val>" .<className>} => '<key>="<val>" .<className>'
-
-        if (nextAttrNode && nextAttrNode.type === 'text') {
-          const matchAttrString = nextAttrNode.value.match(matchAttrRegExp);
-
-          if (matchAttrString) {
-            const attrString = matchAttrString[1];
-
-            const matchPairRegExp = new RegExp(
-              /^([a-zA-Z0-9_-]+)=["']?(.+?)["']?$/,
-            ); // <key>="<val>" => ['<key>="<val>"', '<key>', '<val>']
-
-            const matchClassNameRegExp = new RegExp(/\.([a-zA-Z_][\w_-]*)/); //.<className> => ['.<className>', '<className>']
-
-            attrString.split(/\s+/).forEach((attr) => {
-              const matchPair = attr.match(matchPairRegExp); // match width="50%"
-              const matchClassName = attr.match(matchClassNameRegExp); // match .<className>
-
-              if (matchPair) {
-                console.log(matchPair);
-                const [, key, value] = matchPair;
-                node.data = node.data || {};
-                node.data.hProperties = node.data.hProperties || {};
-                node.data.hProperties[key] = value;
-                console.log(node.data);
-              } else if (matchClassName) {
-                const [, classname] = matchClassName;
-                node.data = node.data || {};
-                node.data.hProperties = node.data.hProperties || {};
-                if (Array.isArray(node.data.hProperties.className)) {
-                  const classes = new Set(node.data.hProperties.className);
-                  classes.add(classname);
-                  node.data.hProperties.className = Array.from(classes);
-                } else {
-                  node.data.hProperties.className = [classname];
-                }
-              }
-            });
-          }
-
-          // remove nextAttrNode in parent.children
-          parent.children.splice(index + 1, 1);
-        }
-      });
-    };
-  }
-
   // processing markdown
   const process = await unified()
     .use(remarkParse) // md -> MDAST
     .use(remarkImageAttributes) // add image attribute
-    // .use(remarkDirective) // analysis directive
-    // .use(directivePlugin) // customize what should be the output
     .use(remarkGfm) // support GFM
-    .use(isToc ? [[remarkToc, { minDepth: 2 }]] : []) // conditionally add remarkToc
     .use(remarkRehype) //  MDAST → HAST
-    .use(slug) //add header id
+    .use(slug) //add header id // for TOC
     .use(rehypeHighlight) // highlight code
     .use(rehypeStringify) // html
     .process(markdown);
 
   const htmlString = process.toString();
 
-  // console.log(htmlString);
+  const isToc = !!meta.toc?.enable;
+  const TOCHeaders = isToc ? extractHeading(markdown) : [];
 
   const dateString = meta.date.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -127,6 +67,7 @@ export default async function OnePostPage({ params }: PageProps) {
   return (
     <>
       <main className="mx-10 sm:mx-80 flex flex-col grow">
+        {isToc && <TableOfContents headings={TOCHeaders} />}
         <h1 className="text-2xl font-bold mt-10 mb-4"> {meta.title}</h1>
         <div className="flex space-x-4 mb-2">
           <div className="flex items-center space-x-1 link-hover">

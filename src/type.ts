@@ -16,3 +16,5 @@ export type MetaDataType = RawMetaDataType & {
   id: string;
   postFilename: string;
 };
+
+export type TOCHeadingType = { depth: number; title: string; elID: string };

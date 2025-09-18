@@ -289,13 +289,13 @@ https://www.digitalocean.com/community/tutorials/css-display-inline-vs-inline-bl
 
 [**MDN Reference**](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Introduction)
 
-> **There is an another compare flex and grid**: [Flex and Grid in CSS](/posts/flex-grid)
+> **There is an another compare flex and grid**: [Flex and Grid in CSS](/notes/flex-grid)
 
 ### Flex
 
 [Sample code](https://jsfiddle.net/bradtraversy/bu0ecodm/1/) provided by [Traversy Media](https://youtu.be/JJSoEo8JSnc)
 
-> [**More Detail**](/posts/flex-grid#flex) in Flex and Grid in CSS
+> [**More Detail**](/notes/flex-grid#flex) in Flex and Grid in CSS
 
 [**Cheat Sheet**](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) provide by CSS-tricks.com
 
@@ -303,7 +303,7 @@ A [Flexbox code Example](https://codepen.io/TyrangYang/pen/GRZjQgg)
 
 ### grid
 
-> [**More Detail**](/posts/flex-grid#grid) in Flex and Grid in CSS
+> [**More Detail**](/notes/flex-grid#grid) in Flex and Grid in CSS
 
 [**Cheat Sheet**](https://css-tricks.com/snippets/css/complete-guide-grid/) provide by CSS-tricks.com
 

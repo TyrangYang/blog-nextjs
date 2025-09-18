@@ -7,7 +7,7 @@ import React from 'react';
 export default function PostPage() {
   return (
     <div className="grow sm:mx-50 mx-2 flex flex-col">
-      <h3 className="self-end my-10 text-3xl font-bold">POSTS</h3>
+      <h3 className="self-end my-10 text-3xl font-bold">Notes</h3>
       <ListPostByMetaList metaDataList={allMetaList}></ListPostByMetaList>
     </div>
   );

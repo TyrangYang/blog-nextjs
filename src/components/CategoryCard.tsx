@@ -24,7 +24,7 @@ const CategoryCard: FC<Props> = ({ title, metaDataList }) => {
             key={`category-${title}-post-${meta.title}`}
             className="ml-5 clickable-hover text-lg"
           >
-            <Link href={`/posts/${meta.postFilename}`}>{meta.title}</Link>
+            <Link href={`/notes/${meta.postFilename}`}>{meta.title}</Link>
           </div>
         );
       })}

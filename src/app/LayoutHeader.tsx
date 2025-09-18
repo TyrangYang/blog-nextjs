@@ -38,9 +38,9 @@ const LayoutHeader: FC = () => {
               </Link>
             </li>
             <li className="clickable-hover">
-              <Link href={'/posts'}>
+              <Link href={'/notes'}>
                 <FontAwesomeIcon className="mr-1" icon={faBookOpen} />
-                <span>Posts</span>
+                <span>Notes</span>
               </Link>
             </li>
             <li className="clickable-hover">
@@ -80,9 +80,9 @@ const LayoutHeader: FC = () => {
               </Link>
             </li>
             <li className="clickable-hover">
-              <Link href={'/posts'}>
+              <Link href={'/notes'}>
                 <FontAwesomeIcon className="mr-1" icon={faBookOpen} />
-                <span>Posts</span>
+                <span>Notes</span>
               </Link>
             </li>
             <li className="clickable-hover">

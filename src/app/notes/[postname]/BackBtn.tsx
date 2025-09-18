@@ -1,4 +1,4 @@
-'use client';
+'use client'; // useRouter only in client component
 import { useRouter } from 'next/navigation';
 import React, { FC } from 'react';
 

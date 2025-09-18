@@ -18,7 +18,7 @@ export const readMarkDown = (postname: string) => {
   return { meta, markdown };
 };
 
-export const postsDirectory = path.join(process.cwd(), 'posts');
+export const postsDirectory = path.join(process.cwd(), 'notes');
 const fileDirnames = fs.readdirSync(postsDirectory);
 
 export const fileNames = fileDirnames.map((filename) =>

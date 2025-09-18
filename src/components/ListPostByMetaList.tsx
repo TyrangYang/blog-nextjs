@@ -15,7 +15,7 @@ export default function ListPostByMetaList({ metaDataList }: Props) {
         return (
           <div className="flex justify-between" key={`post-${meta.title}`}>
             <Link
-              href={`/posts/${meta.postFilename}`}
+              href={`/notes/${meta.postFilename}`}
               className="clickable-hover text-xl"
             >
               {meta.title}

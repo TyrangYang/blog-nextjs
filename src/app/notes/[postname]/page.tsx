@@ -72,7 +72,12 @@ export default async function OnePostPage({ params }: PageProps) {
   return (
     <>
       <main className="mx-10 sm:mx-80 flex flex-col grow">
-        {isToc && <TableOfContents headings={TOCHeaders} />}
+        {isToc && TOCHeaders.length > 0 && (
+          <TableOfContents
+            headings={TOCHeaders}
+            enableAutoCollapse={!!meta.toc?.auto}
+          />
+        )}
         <h1 className="text-2xl font-bold mt-10 mb-4"> {meta.title}</h1>
         <div className="flex space-x-4 mb-2">
           <div className="flex items-center space-x-1 link-hover">

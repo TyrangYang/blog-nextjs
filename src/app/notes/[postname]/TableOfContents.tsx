@@ -1,14 +1,17 @@
 'use client';
 import { TOCHeadingType } from '@/type';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { findHeaderParentList } from './utils/extractHeading';
 
 export default function TableOfContents({
   headings,
+  enableAutoCollapse,
 }: {
   headings: TOCHeadingType[];
+  enableAutoCollapse: boolean;
 }) {
-  const [activeId, setActiveId] = useState<string | null>(headings[0].elID);
+  const [activeId, setActiveId] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -35,6 +38,7 @@ export default function TableOfContents({
       }
     };
 
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 
     return () => window.removeEventListener('scroll', onScroll);
@@ -47,12 +51,32 @@ export default function TableOfContents({
     }
   };
 
+  // if auto collapse enabled, find the path of parent node of
+  const displayTOCHeader = useMemo(() => {
+    const enableCollapse = enableAutoCollapse && headings.length > 15;
+    if (!enableCollapse) return headings;
+
+    const activeHeading = headings.find((h) => h.elID === activeId);
+
+    if (!activeHeading) return headings;
+
+    const displayIdsSet = new Set(
+      findHeaderParentList(activeHeading)
+        .flatMap((h) => {
+          return h.children;
+        })
+        .map((h) => h?.elID),
+    );
+
+    return headings.filter((h) => displayIdsSet.has(h.elID));
+  }, [headings, enableAutoCollapse, activeId]);
+
   const depthMargin = ['', '', 'ml-4', 'ml-8', 'ml-12', 'ml-16'];
 
   return (
     <nav className="sm:fixed sm:right-0 sm:w-60 sm:h-screen overflow-scroll test-border">
       <ul>
-        {headings.map((head) => (
+        {displayTOCHeader.map((head) => (
           <li
             key={head.elID}
             className={clsx(

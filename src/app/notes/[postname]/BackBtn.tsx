@@ -8,6 +8,7 @@ const BackBtn: FC = () => {
     <button
       className="clickable-hover"
       onClick={() => {
+        // console.log(window.location.pathname);
         router.back();
       }}
     >

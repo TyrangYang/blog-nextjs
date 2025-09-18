@@ -75,7 +75,7 @@ export default function TableOfContents({
 
   return (
     <aside className="sm:fixed sm:right-0 sm:w-70 sm:h-full sm:block hidden">
-      <nav className="relative top-10 border-l-zinc-200 border-l-4 overflow-scroll">
+      <nav className="relative top-10 border-l-zinc-200 border-l-4 overflow-scroll max-h-10/12">
         <div className="text-xl font-bold mx-4">CONTENTS</div>
         <ul>
           {displayTOCHeader.map((head) => (

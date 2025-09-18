@@ -36,7 +36,7 @@ export default function BackToTopBtn() {
         'flex justify-center items-center',
         'cursor-pointer',
         'transition-opacity duration-300',
-        'fixed left-5 bottom-10',
+        'fixed right-10 bottom-10',
         displayBtn ? 'opacity-100' : 'opacity-0 pointer-events-none',
       )}
     >

@@ -74,31 +74,34 @@ export default function TableOfContents({
   const depthMargin = ['', '', 'ml-4', 'ml-8', 'ml-12', 'ml-16'];
 
   return (
-    <nav className="sm:fixed sm:right-0 sm:w-60 sm:h-screen overflow-scroll test-border">
-      <ul>
-        {displayTOCHeader.map((head) => (
-          <li
-            key={head.elID}
-            className={clsx(
-              "before:content-['|'] before:mr-3 before:text-cyan-600 before:font-bold",
-              depthMargin[head.depth] || '',
-              activeId === head.elID &&
-                'text-cyan-500 font-bold before:text-red-400',
-            )}
-          >
-            <a
-              href={`#${head.elID}`}
-              onClick={(e) => {
-                e.preventDefault(); // prevent anchor navigate to head
-                smoothScrollTo(head.elID); //
-                window.history.pushState(null, '', `#${head.elID}`);
-              }}
+    <aside className="sm:fixed sm:right-0 sm:w-70 sm:h-full sm:block hidden">
+      <nav className="relative top-10 border-l-zinc-200 border-l-4 overflow-scroll">
+        <div className="text-xl font-bold mx-4">CONTENTS</div>
+        <ul>
+          {displayTOCHeader.map((head) => (
+            <li
+              key={head.elID}
+              className={clsx(
+                "before:content-['|'] before:mr-3 before:text-cyan-600 before:font-bold",
+                depthMargin[head.depth] || '',
+                activeId === head.elID &&
+                  'text-cyan-500 font-bold before:text-red-400',
+              )}
             >
-              {head.title}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+              <a
+                href={`#${head.elID}`}
+                onClick={(e) => {
+                  e.preventDefault(); // prevent anchor navigate to head
+                  smoothScrollTo(head.elID); //
+                  window.history.pushState(null, '', `#${head.elID}`);
+                }}
+              >
+                {head.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
   );
 }

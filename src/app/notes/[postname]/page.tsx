@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+// parse markdown to html
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
@@ -6,20 +8,23 @@ import rehypeHighlight from 'rehype-highlight';
 import rehypeStringify from 'rehype-stringify';
 import slug from 'rehype-slug';
 import Link from 'next/link';
-import type { Metadata } from 'next';
+import remarkImageAttributes from './utils/remarkImageAttributes'; // customized
+// icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendarDays,
   faCircleUser,
 } from '@fortawesome/free-solid-svg-icons';
+// code block highlight styling
 import 'highlight.js/styles/atom-one-light.min.css';
-
-import BackBtn from './BackBtn';
+// const variable
 import { authorName } from '@/variable/staticParam';
 import { fileNames, readMarkDown } from '@/utils/fetchMarkDown';
-import remarkImageAttributes from './utils/remarkImageAttributes';
+// components
+import BackBtn from './BackBtn';
 import extractHeading from './utils/extractHeading';
 import TableOfContents from './TableOfContents';
+import BackToTopBtn from './BackToTopBtn';
 
 interface PageProps {
   params: Promise<{
@@ -88,6 +93,7 @@ export default async function OnePostPage({ params }: PageProps) {
         <div className="flex flex-row-reverse mt-5 border-t-2 border-t-gray-200">
           <BackBtn />
         </div>
+        <BackToTopBtn />
       </main>
     </>
   );

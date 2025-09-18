@@ -50,7 +50,7 @@ export default function TableOfContents({
   const depthMargin = ['', '', 'ml-4', 'ml-8', 'ml-12', 'ml-16'];
 
   return (
-    <nav className="fixed test-border right-0 w-60 h-screen overflow-scroll">
+    <nav className="sm:fixed sm:right-0 sm:w-60 sm:h-screen overflow-scroll test-border">
       <ul>
         {headings.map((head) => (
           <li

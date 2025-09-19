@@ -10,7 +10,7 @@ type Props = {
 
 export default function ListPostByMetaList({ metaDataList }: Props) {
   return (
-    <div className="flex flex-col space-y-2">
+    <div className="flex grow flex-col space-y-2">
       {metaDataList.map((meta) => {
         return (
           <div className="flex justify-between" key={`post-${meta.title}`}>

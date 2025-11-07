@@ -25,6 +25,8 @@ import BackBtn from './BackBtn';
 import extractHeading from './utils/extractHeading';
 import TableOfContents from './TableOfContents';
 import BackToTopBtn from './BackToTopBtn';
+import rehypeAddCopyButton from './utils/rehypeAddCopyButton';
+import ClipboardInitializer from './ClipboardInitializer';
 
 interface PageProps {
   params: Promise<{
@@ -55,6 +57,7 @@ export default async function OnePostPage({ params }: PageProps) {
     .use(remarkGfm) // support GFM
     .use(remarkRehype) //  MDAST → HAST
     .use(slug) //add header id // for TOC
+    .use(rehypeAddCopyButton) // add code header / copy btn
     .use(rehypeHighlight) // highlight code
     .use(rehypeStringify) // html
     .process(markdown);
@@ -72,6 +75,7 @@ export default async function OnePostPage({ params }: PageProps) {
   return (
     <>
       <main className="mx-10 sm:mx-80 flex flex-col grow">
+        <ClipboardInitializer />
         {isToc && TOCHeaders.length > 0 && (
           <TableOfContents
             headings={TOCHeaders}

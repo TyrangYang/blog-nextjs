@@ -1,5 +1,16 @@
 @import 'tailwindcss';
 
+.code-wrapper > .code-header {
+  @apply py-1 px-4 flex place-content-between bg-gray-200;
+}
+
+.copy-btn > svg {
+  @apply fill-gray-400;
+}
+.copy-btn:hover > svg {
+  @apply fill-sky-500 cursor-pointer;
+}
+
 .post-article {
   @apply flex flex-col gap-2;
 }

@@ -25,7 +25,7 @@ import BackBtn from './BackBtn';
 import extractHeading from './utils/extractHeading';
 import TableOfContents from './TableOfContents';
 import BackToTopBtn from './BackToTopBtn';
-import rehypeAddCopyButton from './utils/rehypeAddCopyButton';
+import rehypeAddCodeHeader from './utils/rehypeAddCodeHeader';
 import ClipboardInitializer from './ClipboardInitializer';
 
 interface PageProps {
@@ -57,7 +57,7 @@ export default async function OnePostPage({ params }: PageProps) {
     .use(remarkGfm) // support GFM
     .use(remarkRehype) //  MDAST → HAST
     .use(slug) //add header id // for TOC
-    .use(rehypeAddCopyButton) // add code header / copy btn
+    .use(rehypeAddCodeHeader) // add code header / copy btn
     .use(rehypeHighlight) // highlight code
     .use(rehypeStringify) // html
     .process(markdown);

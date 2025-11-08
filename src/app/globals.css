@@ -11,6 +11,27 @@
   @apply fill-sky-500 cursor-pointer;
 }
 
+.code-title {
+  @apply flex text-gray-400;
+}
+
+.code-title > svg {
+  transition: rotate 0.2s ease;
+  @apply mr-2 fill-gray-400;
+}
+
+.code-header + pre {
+  transition: max-height 0.8s cubic-bezier(0, 1, 0, 1) -0.1s;
+  max-height: 2000px;
+}
+.code-header.hide-code + pre {
+  @apply max-h-0 overflow-hidden;
+}
+
+.code-header.hide-code > .code-title > svg {
+  @apply -rotate-90;
+}
+
 .post-article {
   @apply flex flex-col gap-2;
 }

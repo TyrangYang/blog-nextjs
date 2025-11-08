@@ -28,5 +28,26 @@ export default function ClipboardInitializer() {
     };
   }, []);
 
+  useEffect(() => {
+    const headers = document.querySelectorAll<HTMLDivElement>('.code-header');
+    const cleanups: (() => void)[] = [];
+    headers.forEach((h) => {
+      const handleClick = () => {
+        const classList = h.classList ?? [];
+        const isActive = [...classList].includes('hide-code');
+        if (isActive) {
+          classList.remove('hide-code');
+        } else {
+          classList.add('hide-code');
+        }
+      };
+
+      h.addEventListener('click', handleClick);
+      cleanups.push(() => h.removeEventListener('click', handleClick));
+    });
+    return () => {
+      cleanups.forEach((fn) => fn());
+    };
+  }, []);
   return null; // no visible DOM
 }
